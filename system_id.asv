@@ -13,7 +13,7 @@ dat = readtable('dat_pre.csv');
 y = dat.CO2;
 u = dat.Temperature;
 
-z=iddata(y,u,0.1);
+z=iddata(y,u',0.1); %uを転置してカラムベクトルに直す
 plot(z);
 
 
@@ -48,12 +48,10 @@ n = cellfun(@(x) {x.*(abs(x)>1e-7)}, n);
 d = cellfun(@(x) {x.*(abs(x)>1e-7)}, d);
 besttf = tf(n, d)
 
-
-
-% figure();title('System ID result');
-% [y,t]=lsim(G,u,t);
-% plot(t,y);
-% hold on;
-% [y2,t2]=lsim(besttf,u,t);
-% plot(t2,y2);
-% legend('original','systemID');
+figure();title('System ID result');
+[y,t]=lsim(G,u,t);
+plot(t,y);
+hold on;
+[y2,t2]=lsim(besttf,u,t);
+plot(t2,y2);
+legend('original','systemID');
