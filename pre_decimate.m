@@ -1,11 +1,19 @@
 clear; close all;
 
 dat = readtable('data.csv');
-co2 = dat.CO2;
-co2 = rmoutliers(co2,'mean');
-co2 = fillmissing(co2, 'movmedian',10);
-co2 = decimate(co2,100);
-plot(co2);
-T = array2table(co2);
-T.Properties.VariableNames(1) = {'CO2'};
-writetable(T,'co2.csv');
+n_movmedian = 10;
+n_decimate = 100;
+co2 = filloutliers(dat.CO2,'linear');
+co2 = decimate(co2(1:end-1), n_decimate);
+rh = filloutliers(dat.Humidity,'linear');
+rh = decimate(rh(1:end-1), n_decimate);
+temp = filloutliers(dat.Temperature,'linear');
+temp = decimate(temp(1:end-1), n_decimate);
+soil = filloutliers(dat.SoilMoisture,'linear');
+soil = decimate(soil(1:end-1), n_decimate);
+time = dat.Time;
+time = decimate(time(1:end-1),n_decimate);
+
+T = table(time,temp,rh,co2,soil);
+T.Properties.VariableNames(1:5) = {'Time','Temperature','Humidity','CO2','Soil Moisture'};
+writetable(T,'dat_pre.csv');
