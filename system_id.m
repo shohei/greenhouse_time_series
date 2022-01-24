@@ -16,7 +16,6 @@ u = dat.Temperature;
 z=iddata(y,u,0.1);
 plot(z);
 
-
 Options = tfestOptions;      
 Options.Display = 'off';      
 Options.WeightingFilter = [];
@@ -48,12 +47,11 @@ n = cellfun(@(x) {x.*(abs(x)>1e-7)}, n);
 d = cellfun(@(x) {x.*(abs(x)>1e-7)}, d);
 besttf = tf(n, d)
 
-
-
-% figure();title('System ID result');
-% [y,t]=lsim(G,u,t);
-% plot(t,y);
-% hold on;
-% [y2,t2]=lsim(besttf,u,t);
-% plot(t2,y2);
-% legend('original','systemID');
+figure();
+title('System ID result');
+t =0:0.1:(length(y)-1)*0.1;
+plot(t,y);
+hold on;
+[y2,t2]=lsim(besttf,u,t);
+plot(t2,y2);
+legend('original','systemID');
